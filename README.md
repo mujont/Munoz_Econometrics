@@ -10,4 +10,4 @@ Stata 14 Code with comments
 
 -Ran the regression
 
--Interpreted the results in my paper
+-Interpreted the results in my report
