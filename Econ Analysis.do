@@ -1,3 +1,4 @@
+/*dropped all null values in the ID fields.*/
 drop if ID2005==0
 drop if ID2007==0
 drop if ID2009==0
@@ -5,6 +6,8 @@ drop if ID2011==0
 drop if ID2013==0
 drop if ID2015==0
 
+
+/*forced the removal of all duplicate IDs.*/
 duplicates drop ID2005, force
 duplicates drop ID2007, force
 duplicates drop ID2009, force
@@ -870,12 +873,17 @@ replace infreqdrink2015 = 1 if HOWOFNHAVEDRINKS2015>1 & HOWOFNHAVEDRINKS2015<5
 gen freqdrink2015 = 0
 replace freqdrink2015 = 1 if HOWOFNHAVEDRINKS2015>4 & HOWOFNHAVEDRINKS2015<7
 
+/*summarized the data across each year of observations for analysis and presentation*/
+
 summarize NMBROFHRSOFSLPIN24HR2005 AVGHRSWKWORKED2005 infrequentemail2005 frequentemail2005 infreqschool2005 freqschool2005 infreqshop2005 freqshop2005 infreqgame2005 freqgame2005 infreqmoney2005 freqmoney2005 infreqjob2005 freqjob2005 infreqdisc2005 freqdisc2005 unlikediv2005 likelydiv2005 freqmuscle2005 infreqmuscle2005 infreqsnack2005 freqsnack2005 infreqdrink2005 freqdrink2005
 summarize NMBROFHRSOFSLPIN24HR2007 AVGHRSWKWORKED2007 infrequentemail2007 frequentemail2007 infreqschool2007 freqschool2007 infreqshop2007 freqshop2007 infreqgame2007 freqgame2007 infreqmoney2007 freqmoney2007 infreqjob2007 freqjob2007 infreqdisc2007 freqdisc2007 unlikediv2007 likelydiv2007 freqmuscle2007 infreqmuscle2007 infreqsnack2007 freqsnack2007 infreqdrink2007 freqdrink2007
 summarize NMBROFHRSOFSLPIN24HR2009 AVGHRSWKWORKED2009 infrequentemail2009 frequentemail2009 infreqschool2009 freqschool2009 infreqshop2009 freqshop2009 infreqgame2009 freqgame2009 infreqmoney2009 freqmoney2009 infreqjob2009 freqjob2009 infreqdisc2009 freqdisc2009 unlikediv2009 likelydiv2009 freqmuscle2009 infreqmuscle2009 infreqsnack2009 freqsnack2009 infreqdrink2009 freqdrink2009
 summarize NMBROFHRSOFSLPIN24HR2011 AVGHRSWKWORKED2011 infrequentemail2011 frequentemail2011 infreqschool2011 freqschool2011 infreqshop2011 freqshop2011 infreqgame2011 freqgame2011 infreqmoney2011 freqmoney2011 infreqjob2011 freqjob2011 infreqdisc2011 freqdisc2011 unlikediv2011 likelydiv2011 freqmuscle2011 infreqmuscle2011 infreqsnack2011 freqsnack2011 infreqdrink2011 freqdrink2011
 summarize NMBROFHRSOFSLPIN24HR2013 AVGHRSWKWORKED2013 infrequentemail2013 frequentemail2013 infreqschool2013 freqschool2013 infreqshop2013 freqshop2013 infreqgame2013 freqgame2013 infreqmoney2013 freqmoney2013 infreqjob2013 freqjob2013 infreqdisc2013 freqdisc2013 unlikediv2013 likelydiv2013 freqmuscle2013 infreqmuscle2013 infreqsnack2013 freqsnack2013 infreqdrink2013 freqdrink2013
 summarize NMBROFHRSOFSLPIN24HR2015 AVGHRSWKWORKED2015 infrequentemail2015 frequentemail2015 infreqschool2015 freqschool2015 infreqshop2015 freqshop2015 infreqgame2015 freqgame2015 infreqmoney2015 freqmoney2015 infreqjob2015 freqjob2015 infreqdisc2015 freqdisc2015 unlikediv2015 likelydiv2015 freqmuscle2015 infreqmuscle2015 infreqsnack2015 freqsnack2015 infreqdrink2015 freqdrink2015
+
+/*tabulated data across each year of observations for analysis and presentation of the effect of the data on the independant variable.
+tabulating is the cleanest way to represent binary data in Stata14.*/
 
 tabulate freqgame2005, summarize(NMBROFHRSOFSLPIN24HR2005)
 tabulate freqgame2007, summarize(NMBROFHRSOFSLPIN24HR2007)
@@ -884,6 +892,7 @@ tabulate freqgame2011, summarize(NMBROFHRSOFSLPIN24HR2011)
 tabulate freqgame2013, summarize(NMBROFHRSOFSLPIN24HR2013)
 tabulate freqgame2015, summarize(NMBROFHRSOFSLPIN24HR2015)
 
+/*these commands are in preparation of running a regression on the selected data*/
 
 reshape long NMBROFHRSOFSLPIN24HR AVGHRSWKWORKED infrequentemail frequentemail infreqschool freqschool infreqshop freqshop infreqgame freqgame infreqmoney freqmoney infreqjob freqjob infreqdisc freqdisc unlikediv likelydiv freqmuscle infreqmuscle infreqsnack freqsnack infreqdrink freqdrink, i(ID2005) j(year) 
 
@@ -896,6 +905,8 @@ estimates store random
 xtreg NMBROFHRSOFSLPIN24HR AVGHRSWKWORKED infrequentemail frequentemail infreqschool freqschool infreqshop freqshop infreqgame freqgame infreqmoney freqmoney infreqjob freqjob infreqdisc freqdisc unlikediv likelydiv freqmuscle infreqmuscle infreqsnack freqsnack infreqdrink freqdrink, fe
 
 estimates store fixed
+
+/*this is the robustness test for the regression.*/
 
 hausman fixed random
 
