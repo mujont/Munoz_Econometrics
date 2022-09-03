@@ -892,7 +892,7 @@ tabulate freqgame2011, summarize(NMBROFHRSOFSLPIN24HR2011)
 tabulate freqgame2013, summarize(NMBROFHRSOFSLPIN24HR2013)
 tabulate freqgame2015, summarize(NMBROFHRSOFSLPIN24HR2015)
 
-/*these commands are in preparation of running a regression on the selected data*/
+/*these commands are in preparation of running a robustness test and regression on the selected data*/
 
 reshape long NMBROFHRSOFSLPIN24HR AVGHRSWKWORKED infrequentemail frequentemail infreqschool freqschool infreqshop freqshop infreqgame freqgame infreqmoney freqmoney infreqjob freqjob infreqdisc freqdisc unlikediv likelydiv freqmuscle infreqmuscle infreqsnack freqsnack infreqdrink freqdrink, i(ID2005) j(year) 
 
@@ -909,6 +909,8 @@ estimates store fixed
 /*this is the robustness test for the regression.*/
 
 hausman fixed random
+
+/*based on the hausman test's P value, ran the random effects estimation reggression model on the data*/
 
 xtreg NMBROFHRSOFSLPIN24HR AVGHRSWKWORKED infrequentemail frequentemail infreqschool freqschool infreqshop freqshop infreqgame freqgame infreqmoney freqmoney infreqjob freqjob infreqdisc freqdisc unlikediv likelydiv freqmuscle infreqmuscle infreqsnack freqsnack infreqdrink freqdrink, re
 
